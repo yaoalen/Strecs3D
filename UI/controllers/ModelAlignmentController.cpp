@@ -57,17 +57,17 @@ void ModelAlignmentController::alignModelToFace(int faceId)
 
     auto stepReader = uiAdapter_->getVisualizationManager()->getCurrentStepReader();
     if (!stepReader) {
-        QString msg = "Error: No valid STEP reader available.";
+        QString msg = "錯誤：找不到有效的 STEP 讀取器。";
         qDebug() << msg;
-        uiAdapter_->showCriticalMessage("Error", msg);
+        uiAdapter_->showCriticalMessage("錯誤", msg);
         return;
     }
 
     FaceGeometry geom = stepReader->getFaceGeometry(faceId);
     if (!geom.isValid) {
-        QString msg = "Error: Invalid face geometry.";
+        QString msg = "錯誤：無效的幾何表面。";
         qDebug() << msg;
-        uiAdapter_->showCriticalMessage("Error", msg);
+        uiAdapter_->showCriticalMessage("錯誤", msg);
         return;
     }
 
