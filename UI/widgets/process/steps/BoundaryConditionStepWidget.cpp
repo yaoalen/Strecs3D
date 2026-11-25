@@ -9,24 +9,24 @@ BoundaryConditionStepWidget::BoundaryConditionStepWidget(QWidget* parent) : QWid
     
     // Add Buttons
     
-    m_addConstraintButton = new Button("Add Constraint", this);
+    m_addConstraintButton = new Button("新增約束條件", this);
     connect(m_addConstraintButton, &Button::clicked, this, &BoundaryConditionStepWidget::addConstraintClicked);
     
-    m_addLoadButton = new Button("Add Load", this);
+    m_addLoadButton = new Button("新增載荷條件", this);
     connect(m_addLoadButton, &Button::clicked, this, &BoundaryConditionStepWidget::addLoadClicked);
 
     layout->addWidget(m_addConstraintButton);
     layout->addWidget(m_addLoadButton);
     
     // Select Bed Surface Button
-    m_selectBedSurfaceButton = new Button("Select Bed Surface", this);
+    m_selectBedSurfaceButton = new Button("選取列印底面", this);
     connect(m_selectBedSurfaceButton, &Button::clicked, this, &BoundaryConditionStepWidget::selectBedSurfaceClicked);
     layout->addWidget(m_selectBedSurfaceButton);
     
     layout->addSpacing(20); // Small gap
     
     // Done Button
-    m_doneButton = new Button("Apply Simulation Settings", this);
+    m_doneButton = new Button("套用模擬設定", this);
     m_doneButton->setEmphasized(true);
     m_doneButton->setEnabled(false); // Initially disabled
     connect(m_doneButton, &Button::clicked, this, &BoundaryConditionStepWidget::doneClicked);
