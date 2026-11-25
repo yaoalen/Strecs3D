@@ -179,10 +179,10 @@ void MainWindowUI::createTabButtons(QHBoxLayout* headerLayout)
     // Create TabGroup
     m_tabGroup = new TabGroup(centralWidget);
     
-    m_processTab = new TabButton("Process", m_tabGroup);
-    m_settingsTab = new TabButton("Settings", m_tabGroup);
-    m_showcaseTab = new TabButton("Showcase", m_tabGroup);
-    m_guideTab = new TabButton("Guide", m_tabGroup);
+    m_processTab = new TabButton("處理流程", m_tabGroup);
+    m_settingsTab = new TabButton("參數設定", m_tabGroup);
+    m_showcaseTab = new TabButton("範例展示", m_tabGroup);
+    m_guideTab = new TabButton("使用指南", m_tabGroup);
 
     m_tabGroup->addTab(m_processTab);
     m_tabGroup->addTab(m_settingsTab);
@@ -292,18 +292,18 @@ void MainWindowUI::createButtons()
 {
     Button::setGlobalIconSize(QSize(ICON_SIZE, ICON_SIZE));
 
-    openStlButton = new Button("Open STL File", centralWidget);
+    openStlButton = new Button("開啟 STL 檔案", centralWidget);
     openStlButton->setIcon(":/resources/icons/stl.png");
     openStlButton->setVisible(false);
 
-    openVtkButton = new Button("Open VTK File", centralWidget);
+    openVtkButton = new Button("開啟 VTK 檔案", centralWidget);
     openVtkButton->setIcon(":/resources/icons/vtk.png");
     openVtkButton->setVisible(false);
 
     // openStepButton, constrainButton, etc. are now managed by ProcessManagerWidget
     
     QString slicerType = QString::fromStdString(SettingsManager::instance().slicerType());
-    export3mfButton = new Button(QString("Export 3MF for %1").arg(slicerType), centralWidget);
+    export3mfButton = new Button(QString("匯出 %1 專用 3MF").arg(slicerType), centralWidget);
     export3mfButton->setIcon(":/resources/icons/export.png");
     export3mfButton->setIconDark(":/resources/icons/export.png");
     export3mfButton->setEnabled(false);
@@ -511,4 +511,3 @@ void MainWindowUI::connectUIStateSignals()
 void MainWindowUI::updateUIFromState()
 {
 }
- 
