@@ -16,7 +16,7 @@ InfillStepWidget::InfillStepWidget(QWidget* parent) : QWidget(parent) {
     layout->addSpacing(10);
 
     // Process Button
-    m_processButton = new Button("Process", this);
+    m_processButton = new Button("產生填充密度分佈", this);
     m_processButton->setIcon(":/resources/icons/process.png");
     m_processButton->setEmphasized(true);
 
