@@ -9,7 +9,7 @@
 SimulationStepWidget::SimulationStepWidget(QWidget* parent) : QWidget(parent) {
     QVBoxLayout* layout = new QVBoxLayout(this);
 
-    m_simulateButton = new Button("Simulate", this);
+    m_simulateButton = new Button("執行模擬分析", this);
     m_simulateButton->setMinimumHeight(50);
     m_simulateButton->setEmphasized(true);
     connect(m_simulateButton, &Button::clicked, this, &SimulationStepWidget::simulateClicked);
@@ -85,7 +85,7 @@ void SimulationStepWidget::resetProgress() {
     }
 
     // Reset simulation button state
-    m_simulateButton->setText("Simulate");
+    m_simulateButton->setText("執行模擬分析");
     m_simulateButton->setEnabled(true);
     m_simulateButton->setEmphasized(true);
 }
@@ -97,10 +97,10 @@ void SimulationStepWidget::setSimulationRunning(bool running) {
     }
 
     if (running) {
-        m_simulateButton->setText("Simulating...");
+        m_simulateButton->setText("模擬計算中...");
         m_progressBar->setValue(0);
     } else {
-        m_simulateButton->setText("Simulate");
+        m_simulateButton->setText("執行模擬分析");
         // Set progress bar to 100% when simulation completes
         m_progressBar->setValue(100);
     }
