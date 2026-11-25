@@ -10,7 +10,7 @@
 AddConstraintDialog::AddConstraintDialog(const QString& defaultName, QWidget* parent)
     : QDialog(parent)
 {
-    setWindowTitle("Add Constraint");
+    setWindowTitle("新增約束條件");
     setModal(false);
     setWindowFlags(Qt::Dialog | Qt::WindowStaysOnTopHint);
     setupUI();
@@ -68,7 +68,7 @@ void AddConstraintDialog::setupUI()
     m_nameEdit = new QLineEdit(this);
     m_nameEdit->setStyleSheet(inputStyle);
     m_nameEdit->setFixedWidth(150);
-    QLabel* nameLabel = new QLabel("Name:", this);
+    QLabel* nameLabel = new QLabel("名稱：", this);
     nameLabel->setStyleSheet(labelStyle);
     formLayout->addRow(nameLabel, m_nameEdit);
 
@@ -78,14 +78,14 @@ void AddConstraintDialog::setupUI()
     m_surfaceIdEdit->setStyleSheet(inputStyle);
     m_surfaceIdEdit->setFixedWidth(150);
     m_surfaceIdEdit->setText("0");
-    QLabel* surfaceLabel = new QLabel("Surface ID:", this);
+    QLabel* surfaceLabel = new QLabel("表面 ID：", this);
     surfaceLabel->setStyleSheet(labelStyle);
     formLayout->addRow(surfaceLabel, m_surfaceIdEdit);
 
     mainLayout->addLayout(formLayout);
 
     // Hint label
-    QLabel* hintLabel = new QLabel("Hint: Double-click a face to set the Surface ID.", this);
+    QLabel* hintLabel = new QLabel("提示：在模型表面連點兩下即可設定表面 ID。", this);
     hintLabel->setWordWrap(true);
     hintLabel->setStyleSheet(QString("color: #888888; font-size: %1px; background-color: transparent;")
         .arg(StyleManager::FONT_SIZE_SMALL));
@@ -97,7 +97,7 @@ void AddConstraintDialog::setupUI()
     QHBoxLayout* buttonLayout = new QHBoxLayout();
     buttonLayout->addStretch();
 
-    m_cancelButton = new QPushButton("Cancel", this);
+    m_cancelButton = new QPushButton("取消", this);
     m_cancelButton->setFixedWidth(80);
     m_cancelButton->setStyleSheet(
         QString("QPushButton { background-color: #444; color: white; border: 1px solid #666; "
@@ -116,7 +116,7 @@ void AddConstraintDialog::setupUI()
     });
     buttonLayout->addWidget(m_cancelButton);
 
-    m_okButton = new QPushButton("OK", this);
+    m_okButton = new QPushButton("確定", this);
     m_okButton->setFixedWidth(80);
     m_okButton->setStyleSheet(
         QString("QPushButton { background-color: %1; color: %2; border: none; "
