@@ -115,7 +115,7 @@ void VolumeFractionChartWidget::paintEvent(QPaintEvent* /*event*/)
     painter.setFont(titleFont);
     painter.setPen(textColor);
 
-    QString xTitle = hasStress ? "Stress (Pa)" : "Bin";
+    QString xTitle = hasStress ? "應力 (Pa)" : "區間";
     QRect xTitleRect(plotArea.left(), plotArea.bottom() + 18, plotArea.width(), 15);
     painter.drawText(xTitleRect, Qt::AlignCenter, xTitle);
 
@@ -123,7 +123,7 @@ void VolumeFractionChartWidget::paintEvent(QPaintEvent* /*event*/)
     painter.translate(12, plotArea.center().y());
     painter.rotate(-90);
     painter.drawText(QRect(-plotArea.height() / 2, -8, plotArea.height(), 16),
-                     Qt::AlignCenter, "Volume Fraction");
+                     Qt::AlignCenter, "體積分率");
     painter.restore();
 
     // Draw bars
@@ -148,6 +148,6 @@ void VolumeFractionChartWidget::paintEvent(QPaintEvent* /*event*/)
         QFont msgFont;
         msgFont.setPixelSize(12);
         painter.setFont(msgFont);
-        painter.drawText(plotArea, Qt::AlignCenter, "No data available");
+        painter.drawText(plotArea, Qt::AlignCenter, "尚無資料");
     }
 }
