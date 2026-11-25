@@ -12,7 +12,7 @@
 // --- DropAreaWidget Implementation ---
 
 DropAreaWidget::DropAreaWidget(QWidget* parent) : QLabel(parent) {
-    setText("Drop STEP file here");
+    setText("將 STEP 檔案拖曳至此處");
     setAlignment(Qt::AlignCenter);
     setAcceptDrops(true);
 
@@ -103,7 +103,7 @@ ImportStepWidget::ImportStepWidget(QWidget* parent) : QWidget(parent) {
     layout->addStretch();
     
     // Import Button
-    m_importButton = new Button("Import STEP File", this);
+    m_importButton = new Button("匯入 STEP 檔案", this);
     m_importButton->setGlobalIconSize(QSize(24, 24));
     m_importButton->setIcon(":/resources/icons/step.png");
     m_importButton->setMinimumHeight(50);
@@ -113,7 +113,7 @@ ImportStepWidget::ImportStepWidget(QWidget* parent) : QWidget(parent) {
     layout->addWidget(m_importButton);
     
     // "or" Separator
-    QLabel* orLabel = new QLabel(" or ", this);
+    QLabel* orLabel = new QLabel(" 或 ", this);
     orLabel->setAlignment(Qt::AlignCenter);
     orLabel->setStyleSheet(QString("color: #888; font-size: %1px; font-weight: bold; margin: %2px 0;")
         .arg(StyleManager::FONT_SIZE_XLARGE)
