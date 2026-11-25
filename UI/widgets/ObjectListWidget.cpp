@@ -15,7 +15,7 @@ ObjectListWidget::ObjectListWidget(QWidget* parent)
 
 void ObjectListWidget::setupUI()
 {
-    setHeaderLabel("Scene Objects");
+    setHeaderLabel("場景物件");
     header()->setVisible(true);
     setIndentation(20);
     setSelectionMode(QAbstractItemView::SingleSelection);
@@ -137,12 +137,12 @@ void ObjectListWidget::clearAndRebuild()
              // 1. STP Model
             if (!data.step.filePath.isEmpty()) {
                 m_stepRoot = new ObjectTreeItem(this);
-                m_stepRoot->setText(0, "Model (STEP)");
+                m_stepRoot->setText(0, "模型 (STEP)");
                 m_stepRoot->type = ObjectType::ROOT_STEP;
                 m_stepRoot->setExpanded(true);
                 
                 ObjectTreeItem* item = new ObjectTreeItem(m_stepRoot);
-                item->setText(0, data.step.filename.isEmpty() ? "Unknown" : data.step.filename);
+                item->setText(0, data.step.filename.isEmpty() ? "未知" : data.step.filename);
                 item->type = ObjectType::ITEM_STEP;
             }
         } 
@@ -150,12 +150,12 @@ void ObjectListWidget::clearAndRebuild()
             // 2. Simulation Result
             if (!data.simulationResult.filePath.isEmpty()) {
                 m_simRoot = new ObjectTreeItem(this);
-                m_simRoot->setText(0, "Simulation Result");
+                m_simRoot->setText(0, "模擬結果");
                 m_simRoot->type = ObjectType::ROOT_SIMULATION;
                 m_simRoot->setExpanded(true);
                 
                 ObjectTreeItem* item = new ObjectTreeItem(m_simRoot);
-                item->setText(0, data.simulationResult.filename.isEmpty() ? "Unknown" : data.simulationResult.filename);
+                item->setText(0, data.simulationResult.filename.isEmpty() ? "未知" : data.simulationResult.filename);
                 item->type = ObjectType::ITEM_SIMULATION;
             }
         }
@@ -163,7 +163,7 @@ void ObjectListWidget::clearAndRebuild()
             // 3. Infill Regions
             if (!data.infillRegions.empty()) {
                 m_infillRoot = new ObjectTreeItem(this);
-                m_infillRoot->setText(0, QString("Infill Regions (%1)").arg(data.infillRegions.size()));
+                m_infillRoot->setText(0, QString("填充分區 (%1)").arg(data.infillRegions.size()));
                 m_infillRoot->type = ObjectType::ROOT_INFILL;
                 
                 for (const auto& [key, info] : data.infillRegions) {
@@ -181,14 +181,14 @@ void ObjectListWidget::clearAndRebuild()
             
             if (hasConstraints || hasLoads) {
                 m_bcRoot = new ObjectTreeItem(this);
-                m_bcRoot->setText(0, "Boundary Conditions");
+                m_bcRoot->setText(0, "邊界條件");
                 m_bcRoot->type = ObjectType::ROOT_BC;
                 m_bcRoot->setExpanded(true);
                 
                 // Constraints
                 if (hasConstraints) {
                     m_bcConstraintsRoot = new ObjectTreeItem(m_bcRoot);
-                    m_bcConstraintsRoot->setText(0, QString("Constraints (%1)").arg(data.boundaryCondition.constraints.size()));
+                    m_bcConstraintsRoot->setText(0, QString("約束條件 (%1)").arg(data.boundaryCondition.constraints.size()));
                     m_bcConstraintsRoot->setExpanded(true);
                     m_bcConstraintsRoot->type = ObjectType::ROOT_BC_CONSTRAINTS;
                     
@@ -204,7 +204,7 @@ void ObjectListWidget::clearAndRebuild()
                 // Loads
                 if (hasLoads) {
                     m_bcLoadsRoot = new ObjectTreeItem(m_bcRoot);
-                    m_bcLoadsRoot->setText(0, QString("Loads (%1)").arg(data.boundaryCondition.loads.size()));
+                    m_bcLoadsRoot->setText(0, QString("載荷條件 (%1)").arg(data.boundaryCondition.loads.size()));
                     m_bcLoadsRoot->setExpanded(true);
                     m_bcLoadsRoot->type = ObjectType::ROOT_BC_LOADS;
                     
@@ -349,7 +349,7 @@ void ObjectListWidget::onCustomContextMenuRequested(const QPoint& pos)
                            "QMenu::item { color: #ff5555; padding: 4px 20px; }"
                            "QMenu::item:selected { background-color: #3a3a3a; }");
                            
-        QAction* deleteAction = menu.addAction("Delete");
+        QAction* deleteAction = menu.addAction("刪除");
         
         // Execute menu at cursor position
         QAction* selectedAction = menu.exec(QCursor::pos());
