@@ -284,13 +284,13 @@ void ProcessFlowWidget::setupUI()
     // Create Steps
     // We pass isFirst/isLast flags.
     // 1. Import
-    m_cards.push_back(new ProcessCard(1, "1.Import STEP File", true, false, this));
+    m_cards.push_back(new ProcessCard(1, "1. 匯入 STEP 檔案", true, false, this));
     // 2. Boundary
-    m_cards.push_back(new ProcessCard(2, "2.Set Boundary Conditions", false, false, this));
+    m_cards.push_back(new ProcessCard(2, "2. 設定邊界條件", false, false, this));
     // 3. Simulate
-    m_cards.push_back(new ProcessCard(3, "3.Simulate", false, false, this));
+    m_cards.push_back(new ProcessCard(3, "3. 執行模擬分析", false, false, this));
     // 4. Infill
-    m_cards.push_back(new ProcessCard(4, "4.Build Infill Map", false, true, this));
+    m_cards.push_back(new ProcessCard(4, "4. 產生填充密度分佈", false, true, this));
 
     // Connect each card's clicked signal
     for (size_t i = 0; i < m_cards.size(); ++i) {
@@ -356,4 +356,3 @@ void ProcessFlowWidget::setStepCompleted(ProcessStep step, bool completed)
         m_cards[index]->setCompleted(completed);
     }
 }
-
