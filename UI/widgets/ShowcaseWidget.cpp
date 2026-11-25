@@ -71,7 +71,7 @@ void ShowcaseWidget::createCard(const QString& filename)
 
     info.imageLabel = new RoundedImageLabel(StyleManager::CONTAINER_RADIUS, m_containerWidget);
     info.imageLabel->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-    info.imageLabel->setPlaceholderText("Loading...");
+    info.imageLabel->setPlaceholderText("載入中...");
 
     m_cards.append(info);
 }
@@ -154,7 +154,7 @@ void ShowcaseWidget::fetchNextImage()
                 m_cards[index].loaded = true;
             }
         } else {
-            m_cards[index].imageLabel->setPlaceholderText("No Image");
+            m_cards[index].imageLabel->setPlaceholderText("無圖片");
         }
 
         QTimer::singleShot(0, this, &ShowcaseWidget::fetchNextImage);
