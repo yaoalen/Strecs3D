@@ -33,7 +33,7 @@ void ProcessController::runSimulation()
 
     if (!uiState_) {
         qDebug() << "Error: UIState is null";
-        QMessageBox::critical(parentWidget_, "Error", "UIState is not available");
+        QMessageBox::critical(parentWidget_, "錯誤", "UIState 無法使用");
         return;
     }
 
@@ -71,13 +71,13 @@ void ProcessController::rollbackToStep(ProcessStep targetStep)
     qDebug() << QString("Rolling back to step %1").arg(static_cast<int>(targetStep));
 
     if (!uiState_) {
-        QMessageBox::critical(parentWidget_, "Error", "UIState not available");
+        QMessageBox::critical(parentWidget_, "錯誤", "UIState 無法使用");
         return;
     }
 
     VisualizationManager* visManager = uiAdapter_ ? uiAdapter_->getVisualizationManager() : nullptr;
     if (!visManager) {
-        QMessageBox::critical(parentWidget_, "Error", "VisualizationManager not available");
+        QMessageBox::critical(parentWidget_, "錯誤", "VisualizationManager 無法使用");
         return;
     }
 
