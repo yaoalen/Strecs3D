@@ -10,7 +10,7 @@
 SelectBedSurfaceDialog::SelectBedSurfaceDialog(QWidget* parent)
     : QDialog(parent)
 {
-    setWindowTitle("Select Bed Surface");
+    setWindowTitle("選取列印底面");
     setModal(false);
     setWindowFlags(Qt::Dialog | Qt::WindowStaysOnTopHint);
     setupUI();
@@ -69,18 +69,18 @@ void SelectBedSurfaceDialog::setupUI()
     m_surfaceIdEdit->setStyleSheet(inputStyle);
     m_surfaceIdEdit->setFixedWidth(150);
     // m_surfaceIdEdit->setText("0"); // Initially empty or 0 is fine, but maybe empty to prompt user? Let's stick with 0 or empty. "0" is safe.
-    m_surfaceIdEdit->setPlaceholderText("Double-click a face");
+    m_surfaceIdEdit->setPlaceholderText("請連點兩下模型表面");
     m_surfaceIdEdit->setReadOnly(true); // User should double click, not type manually usually, but readonly makes sense here to enforce interaction? Or allow typing if they know ID? AddConstraint allows typing. Let's allow typing but make it clear.
     m_surfaceIdEdit->setReadOnly(false); 
 
-    QLabel* surfaceLabel = new QLabel("Selected Bed Face ID:", this);
+    QLabel* surfaceLabel = new QLabel("已選取底面 ID：", this);
     surfaceLabel->setStyleSheet(labelStyle);
     formLayout->addRow(surfaceLabel, m_surfaceIdEdit);
 
     mainLayout->addLayout(formLayout);
 
     // Hint label
-    QLabel* hintLabel = new QLabel("Hint: Double-click a face to select it as the bed surface (bottom).", this);
+    QLabel* hintLabel = new QLabel("提示：在模型表面連點兩下即可將其設為列印底面（底部）。", this);
     hintLabel->setWordWrap(true);
     hintLabel->setStyleSheet(QString("color: #888888; font-size: %1px; background-color: transparent;")
         .arg(StyleManager::FONT_SIZE_SMALL));
@@ -92,7 +92,7 @@ void SelectBedSurfaceDialog::setupUI()
     QHBoxLayout* buttonLayout = new QHBoxLayout();
     buttonLayout->addStretch();
 
-    m_cancelButton = new QPushButton("Cancel", this);
+    m_cancelButton = new QPushButton("取消", this);
     m_cancelButton->setFixedWidth(80);
     m_cancelButton->setStyleSheet(
         QString("QPushButton { background-color: #444; color: white; border: 1px solid #666; "
@@ -111,7 +111,7 @@ void SelectBedSurfaceDialog::setupUI()
     });
     buttonLayout->addWidget(m_cancelButton);
 
-    m_okButton = new QPushButton("Apply", this); // "Apply" might be better than OK for an action
+    m_okButton = new QPushButton("套用", this); // "Apply" might be better than OK for an action
     m_okButton->setFixedWidth(80);
     m_okButton->setStyleSheet(
         QString("QPushButton { background-color: %1; color: %2; border: none; "
