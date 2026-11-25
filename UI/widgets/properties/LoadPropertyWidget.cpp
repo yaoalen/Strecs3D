@@ -36,7 +36,7 @@ void LoadPropertyWidget::setupUI()
                                StyleManager::FORM_SPACING, StyleManager::FORM_SPACING);
 
     // Read-only hint label (initially hidden)
-    m_readOnlyHintLabel = new QLabel("Go back to Step 2 to edit.");
+    m_readOnlyHintLabel = new QLabel("請返回步驟 2 進行編輯。");
     m_readOnlyHintLabel->setStyleSheet(QString("color: %1; font-size: %2px; padding: 2px 4px;")
         .arg(ColorManager::ACCENT_COLOR.name())
         .arg(StyleManager::FONT_SIZE_SMALL));
@@ -59,7 +59,7 @@ void LoadPropertyWidget::setupUI()
     m_nameEdit->setStyleSheet(inputStyle);
     m_nameEdit->setFixedWidth(100);
     connect(m_nameEdit, &QLineEdit::editingFinished, this, &LoadPropertyWidget::pushData);
-    layout->addRow(new QLabel("Name:"), m_nameEdit);
+    layout->addRow(new QLabel("名稱："), m_nameEdit);
     
     // Surface ID
     m_surfaceIdEdit = new QLineEdit();
@@ -67,7 +67,7 @@ void LoadPropertyWidget::setupUI()
     m_surfaceIdEdit->setStyleSheet(inputStyle);
     m_surfaceIdEdit->setFixedWidth(100);
     connect(m_surfaceIdEdit, &QLineEdit::editingFinished, this, &LoadPropertyWidget::pushData);
-    layout->addRow(new QLabel("Surface ID:"), m_surfaceIdEdit);
+    layout->addRow(new QLabel("表面 ID："), m_surfaceIdEdit);
     
     // Magnitude (Value) with Unit "N"
     QWidget* valueContainer = new QWidget();
@@ -98,7 +98,7 @@ void LoadPropertyWidget::setupUI()
     valueLayout->addWidget(m_magnitudeEdit);
     valueLayout->addWidget(unitLabel);
 
-    layout->addRow(new QLabel("Value:"), valueContainer);
+    layout->addRow(new QLabel("力值："), valueContainer);
 
     // Reference Edge Selection
     QString buttonStyle = QString("color: white; background-color: #444; border: 1px solid #666; padding: %1px; border-radius: %2px;")
@@ -110,7 +110,7 @@ void LoadPropertyWidget::setupUI()
     edgeLayout->setContentsMargins(0, 0, 0, 0);
     edgeLayout->setSpacing(5);
 
-    m_referenceEdgeButton = new QPushButton("Select Edge");
+    m_referenceEdgeButton = new QPushButton("選取邊線");
     m_referenceEdgeButton->setStyleSheet(buttonStyle);
     m_referenceEdgeButton->setFixedWidth(100);
     connect(m_referenceEdgeButton, &QPushButton::clicked,
@@ -122,19 +122,19 @@ void LoadPropertyWidget::setupUI()
     edgeLayout->addWidget(m_selectedEdgeLabel);
     edgeLayout->addStretch();
 
-    layout->addRow(new QLabel("Reference Edge:"), edgeWidget);
+    layout->addRow(new QLabel("參考邊線："), edgeWidget);
 
     // Reverse Checkbox
     m_reverseCheckBox = new QCheckBox(this);
     m_reverseCheckBox->setStyleSheet("QCheckBox { background-color: transparent; }");
     connect(m_reverseCheckBox, &QCheckBox::toggled, this, &LoadPropertyWidget::onReverseDirectionToggled);
     
-    layout->addRow(new QLabel("Reverse Direction:"), m_reverseCheckBox);
+    layout->addRow(new QLabel("反轉方向："), m_reverseCheckBox);
 
     // Direction Display (read-only)
     m_directionDisplay = new QLabel("(0.000, 0.000, 0.000)");
     m_directionDisplay->setStyleSheet(labelStyle); // Just text style, no border
-    layout->addRow(new QLabel("Direction:"), m_directionDisplay);
+    layout->addRow(new QLabel("施力方向："), m_directionDisplay);
     
     // Apply label style
     for(int i = 0; i < layout->rowCount(); ++i) {
@@ -153,7 +153,7 @@ void LoadPropertyWidget::setupUI()
     closeButtonLayout->setContentsMargins(0, 0, 0, 0);
     closeButtonLayout->addStretch();
 
-    m_closeButton = new QPushButton("Close");
+    m_closeButton = new QPushButton("關閉");
     m_closeButton->setFixedWidth(80);
     m_closeButton->setStyleSheet(
         QString("QPushButton { background-color: %1; color: %2; border: none; "
@@ -199,7 +199,7 @@ void LoadPropertyWidget::updateData()
 
     // Update edge selection display
     if (l.reference_edge_id > 0) {
-        m_selectedEdgeLabel->setText(QString("Edge %1").arg(l.reference_edge_id));
+        m_selectedEdgeLabel->setText(QString("邊線 %1").arg(l.reference_edge_id));
     } else {
         m_selectedEdgeLabel->setText("-");
     }
@@ -302,7 +302,7 @@ void LoadPropertyWidget::onReferenceEdgeButtonClicked()
     } else {
         // Start edge selection
         m_isSelectingEdge = true;
-        m_referenceEdgeButton->setText("Cancel");
+        m_referenceEdgeButton->setText("取消");
 
         if (m_vizManager) {
             m_vizManager->setEdgeSelectionMode(true);
@@ -324,18 +324,18 @@ void LoadPropertyWidget::updateDirectionFromEdge(int edgeId)
 
     auto stepReader = m_vizManager->getCurrentStepReader();
     if (!stepReader) {
-        m_selectedEdgeLabel->setText("Error: No model");
+        m_selectedEdgeLabel->setText("錯誤：無模型");
         return;
     }
 
     EdgeGeometry edgeGeom = stepReader->getEdgeGeometry(edgeId);
     if (!edgeGeom.isValid) {
-        m_selectedEdgeLabel->setText("Error: Invalid edge");
+        m_selectedEdgeLabel->setText("錯誤：無效邊線");
         return;
     }
 
     // Update UI
-    m_selectedEdgeLabel->setText(QString("Edge %1").arg(edgeId));
+    m_selectedEdgeLabel->setText(QString("邊線 %1").arg(edgeId));
     m_directionDisplay->setText(QString("(%1, %2, %3)")
         .arg(edgeGeom.dirX, 0, 'f', 3)
         .arg(edgeGeom.dirY, 0, 'f', 3)
@@ -368,7 +368,7 @@ void LoadPropertyWidget::updateDirectionFromEdge(int edgeId)
 void LoadPropertyWidget::cancelEdgeSelection()
 {
     m_isSelectingEdge = false;
-    m_referenceEdgeButton->setText("Select Edge");
+    m_referenceEdgeButton->setText("選取邊線");
     m_referenceEdgeButton->setStyleSheet(
         QString("color: white; background-color: #444; border: 1px solid #666; "
         "padding: %1px; border-radius: %2px;")
