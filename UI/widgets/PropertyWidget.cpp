@@ -37,7 +37,7 @@ void PropertyWidget::setupUI()
     containerLayout->setSpacing(0);
 
     // Title - match ObjectListWidget header style
-    m_titleLabel = new QLabel("Properties", containerFrame);
+    m_titleLabel = new QLabel("屬性", containerFrame);
     m_titleLabel->setStyleSheet(QString("font-weight: bold; font-size: %1px; padding: %2px %3px %2px %5px; color: #ffffff; border-bottom: 1px solid #444; min-height: %4px;")
         .arg(StyleManager::FONT_SIZE_LARGE)
         .arg(StyleManager::PADDING_SMALL)
@@ -53,7 +53,7 @@ void PropertyWidget::setupUI()
     // 0: Empty/Info
     m_emptyWidget = new QWidget();
     QVBoxLayout* emptyLayout = new QVBoxLayout(m_emptyWidget);
-    QLabel* infoLabel = new QLabel("Select an item to view properties.");
+    QLabel* infoLabel = new QLabel("請選取項目以檢視屬性。");
     infoLabel->setAlignment(Qt::AlignCenter);
     infoLabel->setStyleSheet("color: #888;");
     emptyLayout->addWidget(infoLabel);
@@ -74,13 +74,13 @@ void PropertyWidget::setupUI()
     // 4: Simulation (Placeholders for now)
     m_simulationWidget = new QWidget(); // TODO: Implement specific widget
     QVBoxLayout* simLayout = new QVBoxLayout(m_simulationWidget);
-    simLayout->addWidget(new QLabel("Simulation Result Properties (Read-only for now)"));
+    simLayout->addWidget(new QLabel("模擬結果屬性（目前僅供檢視）"));
     m_stackedWidget->addWidget(m_simulationWidget);
 
     // 5: Infill (Placeholders for now)
     m_infillWidget = new QWidget(); // TODO: Implement specific widget
     QVBoxLayout* infillLayout = new QVBoxLayout(m_infillWidget);
-    infillLayout->addWidget(new QLabel("Infill Region Properties"));
+    infillLayout->addWidget(new QLabel("填充分區屬性"));
     m_stackedWidget->addWidget(m_infillWidget);
 
     // 6: Infill Default View (graphs)
@@ -92,13 +92,13 @@ void PropertyWidget::setupUI()
     m_stressDensityCurveWidget = new StressDensityCurveWidget();
     m_volumeFractionChartWidget = new VolumeFractionChartWidget();
 
-    QLabel* curveLabel = new QLabel("Stress - Density Curve");
+    QLabel* curveLabel = new QLabel("應力 - 密度曲線");
     curveLabel->setAlignment(Qt::AlignCenter);
     curveLabel->setStyleSheet("color: #aaa; font-size: 11px;");
     infillDefaultLayout->addWidget(curveLabel);
     infillDefaultLayout->addWidget(m_stressDensityCurveWidget, 1);
 
-    QLabel* chartLabel = new QLabel("Volume Fraction Distribution");
+    QLabel* chartLabel = new QLabel("體積分率分佈");
     chartLabel->setAlignment(Qt::AlignCenter);
     chartLabel->setStyleSheet("color: #aaa; font-size: 11px;");
     infillDefaultLayout->addWidget(chartLabel);
@@ -160,13 +160,13 @@ void PropertyWidget::updateDefaultView()
     if (m_currentStep == ProcessStep::InfillMap) {
         // InfillMap step: show graph view as default
         if (m_stackedWidget->currentWidget() == m_emptyWidget) {
-            m_titleLabel->setText("Infill Analysis");
+            m_titleLabel->setText("填充分析");
             m_stackedWidget->setCurrentWidget(m_infillDefaultWidget);
         }
     } else {
         // Other steps: revert to empty widget if graph view is showing
         if (m_stackedWidget->currentWidget() == m_infillDefaultWidget) {
-            m_titleLabel->setText("Properties");
+            m_titleLabel->setText("屬性");
             m_stackedWidget->setCurrentWidget(m_emptyWidget);
         }
     }
@@ -179,31 +179,31 @@ void PropertyWidget::onObjectSelected(ObjectType type, const QString& id, int in
     switch (type) {
         case ObjectType::ITEM_STEP:
         case ObjectType::ROOT_STEP: {
-            m_titleLabel->setText("Model Properties");
+            m_titleLabel->setText("模型屬性");
             m_stackedWidget->setCurrentWidget(m_stepWidget);
             m_stepWidget->updateData(); // Force refresh
             break;
         }
         case ObjectType::ITEM_SIMULATION:
         case ObjectType::ROOT_SIMULATION: {
-            m_titleLabel->setText("Simulation Result");
+            m_titleLabel->setText("模擬結果");
             m_stackedWidget->setCurrentWidget(m_simulationWidget);
             break;
         }
         case ObjectType::ITEM_INFILL_REGION: {
-            m_titleLabel->setText("Infill Region");
+            m_titleLabel->setText("填充分區");
             m_stackedWidget->setCurrentWidget(m_infillWidget);
             break;
         }
         case ObjectType::ITEM_BC_CONSTRAINT: {
-            m_titleLabel->setText("Constraint Condition");
+            m_titleLabel->setText("約束條件");
             m_constraintWidget->setTarget(index);
             m_constraintWidget->setReadOnly(m_currentStep != ProcessStep::BoundaryCondition);
             m_stackedWidget->setCurrentWidget(m_constraintWidget);
             break;
         }
         case ObjectType::ITEM_BC_LOAD: {
-            m_titleLabel->setText("Load Condition");
+            m_titleLabel->setText("載荷條件");
             m_loadWidget->setTarget(index);
             m_loadWidget->setReadOnly(m_currentStep != ProcessStep::BoundaryCondition);
             m_stackedWidget->setCurrentWidget(m_loadWidget);
@@ -215,10 +215,10 @@ void PropertyWidget::onObjectSelected(ObjectType type, const QString& id, int in
         case ObjectType::ROOT_INFILL:
         default:
             if (m_currentStep == ProcessStep::InfillMap) {
-                m_titleLabel->setText("Infill Analysis");
+                m_titleLabel->setText("填充分析");
                 m_stackedWidget->setCurrentWidget(m_infillDefaultWidget);
             } else {
-                m_titleLabel->setText("Properties");
+                m_titleLabel->setText("屬性");
                 m_stackedWidget->setCurrentWidget(m_emptyWidget);
             }
             break;
