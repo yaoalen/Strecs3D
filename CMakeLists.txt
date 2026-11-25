@@ -40,3 +40,8 @@ endif()
 
 # 共通設定をインクルード
 include(cmake/common_settings.cmake)
+
+# 強制 MSVC 編譯器以 UTF-8 讀取原始碼與輸出執行字元集，避免繁體中文變成亂碼
+if(MSVC)
+  add_compile_options(/utf-8)
+endif()
