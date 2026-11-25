@@ -38,13 +38,13 @@ void StepPropertyWidget::setupUI()
     // Filename
     m_filenameLabel = new QLabel("-");
     m_filenameLabel->setStyleSheet(valueStyle);
-    layout->addRow(new QLabel("Filename:"), m_filenameLabel);
+    layout->addRow(new QLabel("檔案名稱："), m_filenameLabel);
     
     // Path
     m_filePathLabel = new QLabel("-");
     m_filePathLabel->setStyleSheet(valueStyle);
     m_filePathLabel->setWordWrap(true);
-    layout->addRow(new QLabel("Path:"), m_filePathLabel);
+    layout->addRow(new QLabel("檔案路徑："), m_filePathLabel);
     
     // Apply label style
     for(int i = 0; i < layout->rowCount(); ++i) {
