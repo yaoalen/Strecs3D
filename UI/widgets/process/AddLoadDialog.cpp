@@ -12,7 +12,7 @@
 AddLoadDialog::AddLoadDialog(const QString& defaultName, QWidget* parent)
     : QDialog(parent)
 {
-    setWindowTitle("Add Load");
+    setWindowTitle("新增載荷條件");
     setModal(false);
     setWindowFlags(Qt::Dialog | Qt::WindowStaysOnTopHint);
     
@@ -87,7 +87,7 @@ void AddLoadDialog::setupUI()
     m_nameEdit = new QLineEdit(this);
     m_nameEdit->setStyleSheet(inputStyle);
     m_nameEdit->setFixedWidth(150);
-    QLabel* nameLabel = new QLabel("Name:", this);
+    QLabel* nameLabel = new QLabel("名稱：", this);
     nameLabel->setStyleSheet(labelStyle);
     formLayout->addRow(nameLabel, m_nameEdit);
 
@@ -97,7 +97,7 @@ void AddLoadDialog::setupUI()
     m_surfaceIdEdit->setStyleSheet(inputStyle);
     m_surfaceIdEdit->setFixedWidth(150);
     m_surfaceIdEdit->setText("0");
-    QLabel* surfaceLabel = new QLabel("Surface ID:", this);
+    QLabel* surfaceLabel = new QLabel("表面 ID：", this);
     surfaceLabel->setStyleSheet(labelStyle);
     formLayout->addRow(surfaceLabel, m_surfaceIdEdit);
 
@@ -128,7 +128,7 @@ void AddLoadDialog::setupUI()
     valueLayout->addWidget(m_magnitudeEdit);
     valueLayout->addWidget(unitLabel);
 
-    QLabel* valueLabel = new QLabel("Value:", this);
+    QLabel* valueLabel = new QLabel("力值：", this);
     valueLabel->setStyleSheet(labelStyle);
     formLayout->addRow(valueLabel, valueContainer);
 
@@ -138,7 +138,7 @@ void AddLoadDialog::setupUI()
     edgeLayout->setContentsMargins(0, 0, 0, 0);
     edgeLayout->setSpacing(5);
 
-    m_referenceEdgeButton = new QPushButton("Select Edge", this);
+    m_referenceEdgeButton = new QPushButton("選取邊線", this);
     m_referenceEdgeButton->setStyleSheet(buttonStyle);
     m_referenceEdgeButton->setFixedWidth(100);
     connect(m_referenceEdgeButton, &QPushButton::clicked,
@@ -150,7 +150,7 @@ void AddLoadDialog::setupUI()
     edgeLayout->addWidget(m_selectedEdgeLabel);
     edgeLayout->addStretch();
 
-    QLabel* edgeLabel = new QLabel("Reference Edge:", this);
+    QLabel* edgeLabel = new QLabel("參考邊線：", this);
     edgeLabel->setStyleSheet(labelStyle);
     formLayout->addRow(edgeLabel, edgeWidget);
 
@@ -159,7 +159,7 @@ void AddLoadDialog::setupUI()
     m_reverseCheckBox->setStyleSheet("QCheckBox { background-color: transparent; }");
     connect(m_reverseCheckBox, &QCheckBox::toggled, this, &AddLoadDialog::onReverseDirectionToggled);
     
-    QLabel* reverseLabel = new QLabel("Reverse Direction:", this);
+    QLabel* reverseLabel = new QLabel("反轉方向：", this);
     reverseLabel->setStyleSheet(labelStyle);
     formLayout->addRow(reverseLabel, m_reverseCheckBox);
 
@@ -167,14 +167,15 @@ void AddLoadDialog::setupUI()
     m_directionDisplay = new QLabel("(0.000, 0.000, -1.000)", this);
     m_directionDisplay->setStyleSheet(labelStyle);
 
-    QLabel* dirLabel = new QLabel("Direction:", this);
+    QLabel* dirLabel = new QLabel("施力方向：", this);
     dirLabel->setStyleSheet(labelStyle);
     formLayout->addRow(dirLabel, m_directionDisplay);
 
     mainLayout->addLayout(formLayout);
 
     // Hint label
-    QLabel* hintLabel = new QLabel("Hint: Double-click a face to set the Surface ID and direction.\nSelect an edge to set the direction vector.", this);   hintLabel->setWordWrap(true);
+    QLabel* hintLabel = new QLabel("提示：在模型表面連點兩下即可設定表面 ID 與法線方向。\n選取邊線可設定施力方向向量。", this);
+    hintLabel->setWordWrap(true);
     hintLabel->setStyleSheet(QString("color: #888888; font-size: %1px; background-color: transparent;")
         .arg(StyleManager::FONT_SIZE_SMALL));
     mainLayout->addWidget(hintLabel);
@@ -185,7 +186,7 @@ void AddLoadDialog::setupUI()
     QHBoxLayout* buttonLayout = new QHBoxLayout();
     buttonLayout->addStretch();
 
-    m_cancelButton = new QPushButton("Cancel", this);
+    m_cancelButton = new QPushButton("取消", this);
     m_cancelButton->setFixedWidth(80);
     m_cancelButton->setStyleSheet(
         QString("QPushButton { background-color: #444; color: white; border: 1px solid #666; "
@@ -204,7 +205,7 @@ void AddLoadDialog::setupUI()
     });
     buttonLayout->addWidget(m_cancelButton);
 
-    m_okButton = new QPushButton("OK", this);
+    m_okButton = new QPushButton("確定", this);
     m_okButton->setFixedWidth(80);
     m_okButton->setStyleSheet(
         QString("QPushButton { background-color: %1; color: %2; border: none; "
@@ -270,7 +271,7 @@ void AddLoadDialog::onReferenceEdgeButtonClicked()
     } else {
         // Start edge selection
         m_isSelectingEdge = true;
-        m_referenceEdgeButton->setText("Cancel");
+        m_referenceEdgeButton->setText("取消");
 
         if (m_vizManager) {
             m_vizManager->setFaceSelectionMode(false);
@@ -293,13 +294,13 @@ void AddLoadDialog::updateDirectionFromEdge(int edgeId)
 
     auto stepReader = m_vizManager->getCurrentStepReader();
     if (!stepReader) {
-        m_selectedEdgeLabel->setText("Error: No model");
+        m_selectedEdgeLabel->setText("錯誤：無模型");
         return;
     }
 
     EdgeGeometry edgeGeom = stepReader->getEdgeGeometry(edgeId);
     if (!edgeGeom.isValid) {
-        m_selectedEdgeLabel->setText("Error: Invalid edge");
+        m_selectedEdgeLabel->setText("錯誤：無效邊線");
         return;
     }
 
@@ -309,7 +310,7 @@ void AddLoadDialog::updateDirectionFromEdge(int edgeId)
     m_reverseCheckBox->blockSignals(oldBlock);
 
     // Update UI
-    m_selectedEdgeLabel->setText(QString("Edge %1").arg(edgeId));
+    m_selectedEdgeLabel->setText(QString("邊線 %1").arg(edgeId));
     
     // Update stored load data
     m_currentLoad.reference_edge_id = edgeId;
@@ -329,7 +330,7 @@ void AddLoadDialog::updateDirectionFromEdge(int edgeId)
 void AddLoadDialog::cancelEdgeSelection()
 {
     m_isSelectingEdge = false;
-    m_referenceEdgeButton->setText("Select Edge");
+    m_referenceEdgeButton->setText("選取邊線");
     m_referenceEdgeButton->setStyleSheet(
         QString("color: white; background-color: #444; border: 1px solid #666; "
         "padding: %1px; border-radius: %2px;")
