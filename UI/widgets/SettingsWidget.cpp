@@ -169,7 +169,7 @@ QWidget* SettingsWidget::createSlicerSelectionGroup()
     wrapperLayout->setSpacing(5);
 
     // Title
-    QLabel* title = new QLabel("Slicer Selection", wrapper);
+    QLabel* title = new QLabel("切片軟體選擇", wrapper);
     title->setStyleSheet(getTitleLabelStyle());
     wrapperLayout->addWidget(title);
 
@@ -183,7 +183,7 @@ QWidget* SettingsWidget::createSlicerSelectionGroup()
     // Export to row
     QHBoxLayout* exportRow = new QHBoxLayout();
 
-    QLabel* exportLabel = new QLabel("Export to", container);
+    QLabel* exportLabel = new QLabel("匯出目標", container);
     exportLabel->setStyleSheet(getInputLabelStyle());
 
     m_slicerComboBox = new QComboBox(container);
@@ -211,7 +211,7 @@ QWidget* SettingsWidget::createBambuPrinterGroup()
     wrapperLayout->setSpacing(5);
 
     // Title
-    QLabel* title = new QLabel("Bambu Studio Printer", m_bambuPrinterGroup);
+    QLabel* title = new QLabel("Bambu Studio 印表機", m_bambuPrinterGroup);
     title->setStyleSheet(getTitleLabelStyle());
     wrapperLayout->addWidget(title);
 
@@ -228,16 +228,15 @@ QWidget* SettingsWidget::createBambuPrinterGroup()
     containerLayout->addWidget(m_bambuPrinterLabel);
 
     QLabel* hintLabel = new QLabel(
-        "Exported 3MF files open with this printer. To change it, save a project "
-        "with your printer in Bambu Studio and select that 3MF file.", container);
+        "匯出的 3MF 檔案將以此印表機設定開啟。若要變更，請在 Bambu Studio 中使用您的印表機儲存專案，並選取該 3MF 檔案。", container);
     hintLabel->setWordWrap(true);
     hintLabel->setStyleSheet("QLabel { color: #888888; border: none; }");
     containerLayout->addWidget(hintLabel);
 
     QHBoxLayout* buttonRow = new QHBoxLayout();
-    m_selectBambuPrinterButton = new QPushButton("Select 3MF...", container);
+    m_selectBambuPrinterButton = new QPushButton("選取 3MF...", container);
     m_selectBambuPrinterButton->setStyleSheet(getButtonStyle());
-    m_resetBambuPrinterButton = new QPushButton("Use Default", container);
+    m_resetBambuPrinterButton = new QPushButton("使用預設值", container);
     m_resetBambuPrinterButton->setStyleSheet(getButtonStyle());
     buttonRow->addStretch();
     buttonRow->addWidget(m_selectBambuPrinterButton);
@@ -254,22 +253,22 @@ void SettingsWidget::updateBambuPrinterGroup()
     const auto projectSettings = BambuProjectSettings::loadCurrent();
     const QString printerName = projectSettings
         ? QString::fromStdString(projectSettings->printerName())
-        : QString("Unknown");
-    m_bambuPrinterLabel->setText("Printer: " + printerName);
+        : QString("未知");
+    m_bambuPrinterLabel->setText("目前印表機：" + printerName);
     m_bambuPrinterGroup->setVisible(m_slicerComboBox->currentText() == "Bambu");
 }
 
 void SettingsWidget::onSelectBambuPrinterClicked()
 {
     const QString path = QFileDialog::getOpenFileName(
-        this, "Select Bambu Studio Project", QString(), "3MF Files (*.3mf)");
+        this, "選取 Bambu Studio 專案", QString(), "3MF 檔案 (*.3mf)");
     if (path.isEmpty()) {
         return;
     }
 
     QString error;
     if (!BambuProjectSettings::importFrom3mf(path.toStdString(), error)) {
-        QMessageBox::warning(this, "Bambu Studio Printer", error);
+        QMessageBox::warning(this, "Bambu Studio 印表機", error);
         return;
     }
     updateBambuPrinterGroup();
@@ -278,7 +277,7 @@ void SettingsWidget::onSelectBambuPrinterClicked()
 void SettingsWidget::onResetBambuPrinterClicked()
 {
     if (!BambuProjectSettings::resetToDefault()) {
-        QMessageBox::warning(this, "Bambu Studio Printer", "Failed to reset the printer settings.");
+        QMessageBox::warning(this, "Bambu Studio 印表機", "重設印表機設定失敗。");
         return;
     }
     updateBambuPrinterGroup();
@@ -294,7 +293,7 @@ QWidget* SettingsWidget::createMaterialSelectionGroup()
     wrapperLayout->setSpacing(5);
 
     // Title
-    QLabel* title = new QLabel("Material", wrapper);
+    QLabel* title = new QLabel("材料", wrapper);
     title->setStyleSheet(getTitleLabelStyle());
     wrapperLayout->addWidget(title);
 
@@ -308,7 +307,7 @@ QWidget* SettingsWidget::createMaterialSelectionGroup()
     // Material selection row
     QHBoxLayout* materialRow = new QHBoxLayout();
 
-    QLabel* materialLabel = new QLabel("Material Type", container);
+    QLabel* materialLabel = new QLabel("材料類型", container);
     materialLabel->setStyleSheet(getInputLabelStyle());
 
     m_materialComboBox = new QComboBox(container);
@@ -336,7 +335,7 @@ QWidget* SettingsWidget::createDensitySliderGroup()
     wrapperLayout->setSpacing(5);
 
     // Title
-    QLabel* title = new QLabel("Infill", wrapper);
+    QLabel* title = new QLabel("填充設定", wrapper);
     title->setStyleSheet(getTitleLabelStyle());
     wrapperLayout->addWidget(title);
 
@@ -353,16 +352,16 @@ QWidget* SettingsWidget::createDensitySliderGroup()
 
     // Min Density row
     m_minDensityEdit = createDensityInput();
-    containerLayout->addLayout(createDensityRow("Minimum Density", m_minDensityEdit));
+    containerLayout->addLayout(createDensityRow("最低填充密度", m_minDensityEdit));
 
     // Max Density row
     m_maxDensityEdit = createDensityInput();
-    containerLayout->addLayout(createDensityRow("Maximum Density", m_maxDensityEdit));
+    containerLayout->addLayout(createDensityRow("最高填充密度", m_maxDensityEdit));
 
     // Infill Pattern row
     QHBoxLayout* patternRow = new QHBoxLayout();
 
-    QLabel* patternLabel = new QLabel("Infill Pattern", container);
+    QLabel* patternLabel = new QLabel("填充圖案", container);
     patternLabel->setStyleSheet(getInputLabelStyle());
 
     m_infillPatternComboBox = new QComboBox(container);
@@ -386,7 +385,7 @@ QWidget* SettingsWidget::createDensitySliderGroup()
     m_regionCountEdit->setAlignment(Qt::AlignLeft);
 
     QHBoxLayout* regionCountRow = new QHBoxLayout();
-    QLabel* regionCountLabel = new QLabel("Region Count", container);
+    QLabel* regionCountLabel = new QLabel("分區數量", container);
     regionCountLabel->setStyleSheet(getInputLabelStyle());
     regionCountRow->addWidget(regionCountLabel);
     regionCountRow->addStretch();
@@ -565,7 +564,7 @@ QWidget* SettingsWidget::createSafetyGroup()
     wrapperLayout->setSpacing(5);
 
     // Title
-    QLabel* title = new QLabel("Safety", wrapper);
+    QLabel* title = new QLabel("安全性參數", wrapper);
     title->setStyleSheet(getTitleLabelStyle());
     wrapperLayout->addWidget(title);
 
@@ -586,7 +585,7 @@ QWidget* SettingsWidget::createSafetyGroup()
     m_safetyFactorEdit->setFixedWidth(100);
     m_safetyFactorEdit->setAlignment(Qt::AlignLeft);
 
-    containerLayout->addLayout(createDensityRow("Safety Factor", m_safetyFactorEdit));
+    containerLayout->addLayout(createDensityRow("安全係數", m_safetyFactorEdit));
 
     // Z Stress Factor input
     m_zStressFactorValidator = new QDoubleValidator(1.0, 10.0, 1, this);
@@ -597,7 +596,7 @@ QWidget* SettingsWidget::createSafetyGroup()
     m_zStressFactorEdit->setFixedWidth(100);
     m_zStressFactorEdit->setAlignment(Qt::AlignLeft);
 
-    containerLayout->addLayout(createDensityRow("Delamination Risk Multiplier", m_zStressFactorEdit));
+    containerLayout->addLayout(createDensityRow("層間剝離風險係數", m_zStressFactorEdit));
 
     wrapperLayout->addWidget(container);
 
