@@ -12,7 +12,7 @@ RollbackConfirmationDialog::RollbackConfirmationDialog(
     QWidget* parent
 ) : QDialog(parent), m_targetStep(targetStep), m_currentStep(currentStep)
 {
-    setWindowTitle("Confirm");
+    setWindowTitle("確認");
     setModal(false); // モーダルレスに設定
     // ダイアログを常に最前面に表示することで、マウスイベントが3Dビューに渡されるのを防ぐ
     setWindowFlags(Qt::Dialog | Qt::WindowStaysOnTopHint);
@@ -35,8 +35,8 @@ void RollbackConfirmationDialog::setupUI() {
 
     // Buttons
     QHBoxLayout* buttonLayout = new QHBoxLayout();
-    m_cancelButton = new QPushButton("Cancel", this);
-    m_okButton = new QPushButton("OK", this);
+    m_cancelButton = new QPushButton("取消", this);
+    m_okButton = new QPushButton("確定", this);
 
     buttonLayout->addStretch();
     buttonLayout->addWidget(m_cancelButton);
@@ -79,7 +79,7 @@ void RollbackConfirmationDialog::setupUI() {
 QString RollbackConfirmationDialog::generateWarningMessage(
     ProcessStep target, ProcessStep current
 ) {
-    QString message = "The following processes will be reset:<br><br>";
+    QString message = "以下處理步驟將會被重設：<br><br>";
 
     int targetIdx = static_cast<int>(target);
     int currentIdx = static_cast<int>(current);
@@ -88,23 +88,23 @@ QString RollbackConfirmationDialog::generateWarningMessage(
     QStringList resetSteps;
 
     if (targetIdx == 0) {
-        resetSteps << "• Import STEP File";
+        resetSteps << "• 匯入 STEP 檔案";
     }
     if (currentIdx >= static_cast<int>(ProcessStep::BoundaryCondition) && targetIdx < 1) {
-        resetSteps << "• Boundary Conditions";
+        resetSteps << "• 設定邊界條件";
     }
     if (currentIdx >= static_cast<int>(ProcessStep::Simulate) && targetIdx < 2) {
-        resetSteps << "• Simulate";
+        resetSteps << "• 執行模擬分析";
     }
     if (currentIdx >= static_cast<int>(ProcessStep::InfillMap) && targetIdx < 3) {
-        resetSteps << "• Build Infill Map";
+        resetSteps << "• 產生填充密度分佈";
     }
 
     if (!resetSteps.isEmpty()) {
         message += resetSteps.join("<br>");
     }
 
-    message += "<br><br>Continue?";
+    message += "<br><br>確定要繼續嗎？";
 
     return message;
 }
