@@ -31,7 +31,7 @@ void BoundaryConditionController::showAddConstraintDialog()
     if (!uiState_) return;
 
     BoundaryCondition bc = uiState_->getBoundaryCondition();
-    QString newName = generateUniqueName("Constraint", bc, true);
+    QString newName = generateUniqueName("約束", bc, true);
 
     AddConstraintDialog* dialog = new AddConstraintDialog(newName, parentWidget_);
     dialog->setAttribute(Qt::WA_DeleteOnClose);
@@ -61,7 +61,7 @@ void BoundaryConditionController::showAddLoadDialog()
     if (!uiState_) return;
 
     BoundaryCondition bc = uiState_->getBoundaryCondition();
-    QString newName = generateUniqueName("Load", bc, false);
+    QString newName = generateUniqueName("載荷", bc, false);
 
     AddLoadDialog* dialog = new AddLoadDialog(newName, parentWidget_);
     dialog->setAttribute(Qt::WA_DeleteOnClose);
