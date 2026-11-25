@@ -107,14 +107,14 @@ void StressDensityCurveWidget::paintEvent(QPaintEvent* /*event*/)
 
     // X axis title
     QRect xTitleRect(plotArea.left(), plotArea.bottom() + 18, plotArea.width(), 15);
-    painter.drawText(xTitleRect, Qt::AlignCenter, "Stress (Pa)");
+    painter.drawText(xTitleRect, Qt::AlignCenter, "應力 (Pa)");
 
     // Y axis title (rotated)
     painter.save();
     painter.translate(12, plotArea.center().y());
     painter.rotate(-90);
     painter.drawText(QRect(-plotArea.height() / 2, -8, plotArea.height(), 16),
-                     Qt::AlignCenter, "Density (%)");
+                     Qt::AlignCenter, "密度 (%)");
     painter.restore();
 
     // Draw clamp range indicators
