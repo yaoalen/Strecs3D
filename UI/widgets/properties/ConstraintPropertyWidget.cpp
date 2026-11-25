@@ -38,7 +38,7 @@ void ConstraintPropertyWidget::setupUI()
                                StyleManager::FORM_SPACING, StyleManager::FORM_SPACING);
 
     // Read-only hint label (initially hidden)
-    m_readOnlyHintLabel = new QLabel("Go back to Step 2 to edit.");
+    m_readOnlyHintLabel = new QLabel("請返回步驟 2 進行編輯。");
     m_readOnlyHintLabel->setStyleSheet(QString("color: %1; font-size: %2px; padding: 2px 4px;")
         .arg(ColorManager::ACCENT_COLOR.name())
         .arg(StyleManager::FONT_SIZE_SMALL));
@@ -62,7 +62,7 @@ void ConstraintPropertyWidget::setupUI()
     m_nameEdit->setStyleSheet(inputStyle);
     m_nameEdit->setFixedWidth(100);
     connect(m_nameEdit, &QLineEdit::editingFinished, this, &ConstraintPropertyWidget::pushData);
-    layout->addRow(new QLabel("Name:"), m_nameEdit);
+    layout->addRow(new QLabel("名稱："), m_nameEdit);
     
     // Surface ID
     m_surfaceIdEdit = new QLineEdit();
@@ -71,7 +71,7 @@ void ConstraintPropertyWidget::setupUI()
     m_surfaceIdEdit->setFixedWidth(100);
     // Connect to editingFinished for data push (consistent with LoadPropertyWidget)
     connect(m_surfaceIdEdit, &QLineEdit::editingFinished, this, &ConstraintPropertyWidget::pushData);
-    layout->addRow(new QLabel("Surface ID:"), m_surfaceIdEdit);
+    layout->addRow(new QLabel("表面 ID："), m_surfaceIdEdit);
     
     // Apply label style
     for(int i = 0; i < layout->rowCount(); ++i) {
@@ -88,7 +88,7 @@ void ConstraintPropertyWidget::setupUI()
     closeButtonLayout->setContentsMargins(0, 0, 0, 0);
     closeButtonLayout->addStretch();
 
-    m_closeButton = new QPushButton("Close");
+    m_closeButton = new QPushButton("關閉");
     m_closeButton->setFixedWidth(80);
     m_closeButton->setStyleSheet(
         QString("QPushButton { background-color: %1; color: %2; border: none; "
