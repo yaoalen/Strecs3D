@@ -11,38 +11,49 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Cache vcpkg packages
-        uses: actions/cache@v4
+      - name: Restore vcpkg cache
+        id: cache-vcpkg
+        uses: actions/cache/restore@v4
         with:
-          path: |
-            ~\AppData\Local\vcpkg\archives
-            C:\Users\runneradmin\AppData\Local\vcpkg\archives
-          key: vcpkg-win2022-cpp17-${{ hashFiles('vcpkg.json') }}
+          path: C:\Users\runneradmin\AppData\Local\vcpkg\archives
+          key: vcpkg-win2022-rel-${{ hashFiles('vcpkg.json') }}-${{ github.run_id }}
+          restore-keys: |
+            vcpkg-win2022-rel-${{ hashFiles('vcpkg.json') }}-
 
       - name: Setup MSVC
         uses: ilammy/msvc-dev-cmd@v1
 
-      - name: Patch C++17 Standard for OpenCASCADE 8 & Gmsh
-        run: |
-          Add-Content -Path "$env:VCPKG_INSTALLATION_ROOT/triplets/community/x64-windows-release.cmake" -Value "`nset(VCPKG_CXX_FLAGS `"/std:c++17 /EHsc`")"
-          $portfile = "ports/gmsh/portfile.cmake"
-          if (Test-Path $portfile) {
-            (Get-Content $portfile) -replace 'OPTIONS', "OPTIONS`n        -DCMAKE_CXX_STANDARD=17`n        -DCMAKE_CXX_STANDARD_REQUIRED=ON" | Set-Content $portfile
-          }
-
       - name: Configure and Build
+        env:
+          _CL_: /std:c++17
         run: |
           cmake -B build `
             -DCMAKE_TOOLCHAIN_FILE="$env:VCPKG_INSTALLATION_ROOT/scripts/buildsystems/vcpkg.cmake" `
             -DVCPKG_TARGET_TRIPLET=x64-windows-release `
+            -DVCPKG_HOST_TRIPLET=x64-windows-release `
             -DCMAKE_CXX_STANDARD=17
           if ($LASTEXITCODE -ne 0) {
             if (Test-Path "build/vcpkg-manifest-install.log") {
-              Get-Content "build/vcpkg-manifest-install.log" -Tail 50
+              Get-Content "build/vcpkg-manifest-install.log" -Tail 60
             }
             exit 1
           }
           cmake --build build --config Release
+
+      - name: Deploy Qt Dependencies
+        run: |
+          $windeployqt = Get-ChildItem -Path . -Filter "windeployqt.exe" -Recurse -ErrorAction SilentlyContinue | Select-Object -First 1
+          $exe = Get-ChildItem -Path "build/Release" -Filter "*.exe" -ErrorAction SilentlyContinue | Select-Object -First 1
+          if ($windeployqt -and $exe) {
+            & $windeployqt.FullName --release --no-translations $exe.FullName
+          }
+
+      - name: Save vcpkg cache (even on failure)
+        if: always()
+        uses: actions/cache/save@v4
+        with:
+          path: C:\Users\runneradmin\AppData\Local\vcpkg\archives
+          key: vcpkg-win2022-rel-${{ hashFiles('vcpkg.json') }}-${{ github.run_id }}
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
