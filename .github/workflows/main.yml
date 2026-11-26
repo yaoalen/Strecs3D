@@ -11,31 +11,31 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Rewind vcpkg to 2025-07 (OpenCASCADE 7.x)
+        run: |
+          Set-Location $env:VCPKG_INSTALLATION_ROOT
+          git fetch --shallow-since="2025-07-01" origin master
+          $commit = git rev-list -n 1 --before="2025-08-01" origin/master
+          git checkout -f $commit
+
       - name: Restore vcpkg cache
         id: cache-vcpkg
         uses: actions/cache/restore@v4
         with:
           path: C:\Users\runneradmin\AppData\Local\vcpkg\archives
-          key: vcpkg-win2022-rel-${{ hashFiles('vcpkg.json') }}-${{ github.run_id }}
+          key: vcpkg-win2022-202507-${{ hashFiles('vcpkg.json') }}-${{ github.run_id }}
           restore-keys: |
-            vcpkg-win2022-rel-${{ hashFiles('vcpkg.json') }}-
+            vcpkg-win2022-202507-${{ hashFiles('vcpkg.json') }}-
 
       - name: Setup MSVC
         uses: ilammy/msvc-dev-cmd@v1
-
-      - name: Force C++17 inside Gmsh portfile
-        run: |
-          $p = "ports/gmsh/portfile.cmake"
-          $content = Get-Content $p -Raw
-          Set-Content $p ('set(ENV{_CL_} "/std:c++17")' + "`n" + $content)
 
       - name: Configure and Build
         run: |
           cmake -B build `
             -DCMAKE_TOOLCHAIN_FILE="$env:VCPKG_INSTALLATION_ROOT/scripts/buildsystems/vcpkg.cmake" `
             -DVCPKG_TARGET_TRIPLET=x64-windows-release `
-            -DVCPKG_HOST_TRIPLET=x64-windows-release `
-            -DCMAKE_CXX_STANDARD=17
+            -DVCPKG_HOST_TRIPLET=x64-windows-release
           if ($LASTEXITCODE -ne 0) {
             if (Test-Path "build/vcpkg-manifest-install.log") {
               Get-Content "build/vcpkg-manifest-install.log" -Tail 60
@@ -57,7 +57,7 @@ jobs:
         uses: actions/cache/save@v4
         with:
           path: C:\Users\runneradmin\AppData\Local\vcpkg\archives
-          key: vcpkg-win2022-rel-${{ hashFiles('vcpkg.json') }}-${{ github.run_id }}
+          key: vcpkg-win2022-202507-${{ hashFiles('vcpkg.json') }}-${{ github.run_id }}
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
