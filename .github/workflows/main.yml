@@ -7,28 +7,36 @@ on:
 
 jobs:
   build:
-    runs-on: windows-latest
-    env:
-      VCPKG_BUILD_TYPE: release
+    runs-on: windows-2022
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v4
+
+      - name: Cache vcpkg packages
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~\AppData\Local\vcpkg\archives
+          key: vcpkg-win2022-${{ hashFiles('vcpkg.json') }}
 
       - name: Setup MSVC
         uses: ilammy/msvc-dev-cmd@v1
 
       - name: Configure and Build
         run: |
-          cmake -B build -DCMAKE_TOOLCHAIN_FILE="$env:VCPKG_INSTALLATION_ROOT/scripts/buildsystems/vcpkg.cmake"
+          cmake -B build `
+            -DCMAKE_TOOLCHAIN_FILE="$env:VCPKG_INSTALLATION_ROOT/scripts/buildsystems/vcpkg.cmake" `
+            -DVCPKG_TARGET_TRIPLET=x64-windows-release
           if ($LASTEXITCODE -ne 0) {
-            if (Test-Path "build/vcpkg-manifest-install.log") {
-              Get-Content "build/vcpkg-manifest-install.log" -Tail 60
+            Get-ChildItem "C:/vcpkg/buildtrees" -Filter "*-err.log" -Recurse | ForEach-Object {
+              Write-Host "=== $($_.FullName) ==="
+              Get-Content $_.FullName -Tail 40
             }
             exit 1
           }
           cmake --build build --config Release
 
       - name: Upload Artifact
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v4
         with:
           name: Strecs3D-Windows-TC
           path: build/Release/
