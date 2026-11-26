@@ -16,20 +16,29 @@ jobs:
         with:
           path: |
             ~\AppData\Local\vcpkg\archives
-          key: vcpkg-win2022-${{ hashFiles('vcpkg.json') }}
+            C:\Users\runneradmin\AppData\Local\vcpkg\archives
+          key: vcpkg-win2022-cpp17-${{ hashFiles('vcpkg.json') }}
 
       - name: Setup MSVC
         uses: ilammy/msvc-dev-cmd@v1
+
+      - name: Patch C++17 Standard for OpenCASCADE 8 & Gmsh
+        run: |
+          Add-Content -Path "$env:VCPKG_INSTALLATION_ROOT/triplets/community/x64-windows-release.cmake" -Value "`nset(VCPKG_CXX_FLAGS `"/std:c++17 /EHsc`")"
+          $portfile = "ports/gmsh/portfile.cmake"
+          if (Test-Path $portfile) {
+            (Get-Content $portfile) -replace 'OPTIONS', "OPTIONS`n        -DCMAKE_CXX_STANDARD=17`n        -DCMAKE_CXX_STANDARD_REQUIRED=ON" | Set-Content $portfile
+          }
 
       - name: Configure and Build
         run: |
           cmake -B build `
             -DCMAKE_TOOLCHAIN_FILE="$env:VCPKG_INSTALLATION_ROOT/scripts/buildsystems/vcpkg.cmake" `
-            -DVCPKG_TARGET_TRIPLET=x64-windows-release
+            -DVCPKG_TARGET_TRIPLET=x64-windows-release `
+            -DCMAKE_CXX_STANDARD=17
           if ($LASTEXITCODE -ne 0) {
-            Get-ChildItem "C:/vcpkg/buildtrees" -Filter "*-err.log" -Recurse | ForEach-Object {
-              Write-Host "=== $($_.FullName) ==="
-              Get-Content $_.FullName -Tail 40
+            if (Test-Path "build/vcpkg-manifest-install.log") {
+              Get-Content "build/vcpkg-manifest-install.log" -Tail 50
             }
             exit 1
           }
