@@ -1,3 +1,4 @@
+```yaml
 name: Build Strecs3D Windows
 
 on:
@@ -17,6 +18,7 @@ jobs:
           git fetch --shallow-since="2025-07-01" origin master
           $commit = git rev-list -n 1 --before="2025-08-01" origin/master
           git checkout -f $commit
+          .\bootstrap-vcpkg.bat -disableMetrics
 
       - name: Restore vcpkg cache
         id: cache-vcpkg
@@ -64,3 +66,5 @@ jobs:
         with:
           name: Strecs3D-Windows-TC
           path: build/Release/
+
+```
